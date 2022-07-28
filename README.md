@@ -17,7 +17,7 @@ https://www.amazon.com/gp/product/B01BMRTZGE/ref=ox_sc_act_title_5?smid=A2GTSJRN
 
 One Teensy 4.0 (there are deals on amazon so won’t link it) - MAKE SURE IT’S A 4.0!! I ordered an LC by accident the first time..
 
-Any 30 amp soldering iron (approx. $13 from Walmart) or any iron with a relatively sharp tip - this is crucial when soldering breakout boards.
+Any 30 amp or greater soldering iron (approx. $13 from Walmart) or any iron with a relatively sharp tip - this is crucial when soldering breakout boards.
 
 Arduino Kit for Testing Purposes (recommend). I used these wires in my final project (easy and adherent to solder):
 https://www.amazon.com/gp/product/B00BT0NDB8/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1
