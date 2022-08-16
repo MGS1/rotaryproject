@@ -151,7 +151,7 @@ void loop() {
       //'Thanks for celebrating with us and taking the time to record a message'
       playWav1.play("greeting.wav");    
       // Wait until the  message has finished playing
-      while (playWav1.isPlaying()) {
+      while (!playWav1.isStopped()) {/////////////////updated to accomodate deprecated logic
         // Check whether the handset is replaced
         buttonRecord.update();
         // Handset is replaced
