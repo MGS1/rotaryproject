@@ -1,4 +1,9 @@
-/**
+/**(I THINK) - THE LATEST, GREATEST VERSION OF THE BASIC VERSION OF THE ROTARY AUDIO RECORDER -
+ * Pick the phone up, listen to "Greeting.wav", and start recording after the beep.
+ * Button functionality to playback the last recorded message while the pushbutton is held down
+ * prior to picking the handset up. Honestly, I'm sure there are updates on lastaira's repo at
+ * this point and it does the same exact thing with the same inputs I believe. - 11/28/22
+ *
  * Much thanks to https://youtu.be/dI6ielrP1SE
  * Tested using a Teensy 4.0 with 4.0 Teensy Audio Shield
  * 
@@ -67,7 +72,10 @@ enum Mode {Initialising, Ready, Prompting, Recording, Playing};
 Mode mode = Mode::Initialising;
 
 void setup() {
-
+  Serial.begin(9600);
+  while (!Serial && millis() < 5000) {
+    // wait for serial port to connect.
+  }
   // Note that Serial.begin() is not required for Teensy - 
   // by default it initialises serial communication at full USB speed
   // See https://www.pjrc.com/teensy/td_serial.html
@@ -111,7 +119,7 @@ void setup() {
   }
 
   // Value in dB - 65 max - was 15 - input volume
-  sgtl5000_1.micGain(18);
+  sgtl5000_1.micGain(17);
 
   // Synchronise the Time object used in the program code with the RTC time provider.
   // See https://github.com/PaulStoffregen/Time
@@ -139,36 +147,31 @@ void loop() {
         mode = Mode::Prompting;
       }
       else if(buttonPlay.fallingEdge()) {
-        //actiavtes when previously high value is low
-        playAllRecordings();
+        //playAllRecordings();
+        playLastRecording();
       }
+
       break;
 
     case Mode::Prompting:
       // Wait a second for users to put the handset to their ear
-      wait(1500);
+      wait(1000);
       // Play the greeting (SAVED ON SD CARD) inviting them to record their message
       //'Thanks for celebrating with us and taking the time to record a message'
       playWav1.play("greeting.wav");    
       // Wait until the  message has finished playing
-      while (!playWav1.isStopped()) {/////////////////updated to accomodate deprecated logic
+      while (!playWav1.isStopped()) {
         // Check whether the handset is replaced
         buttonRecord.update();
         // Handset is replaced
         if(buttonRecord.fallingEdge()) {
+          Serial.println("Hung up");
           playWav1.stop();
           mode = Mode::Ready;
           return;
         }
       }
-      // Debug message
-      Serial.println("Started Recording");
-      // Play the tone sound effect/TONE A/ "leave a message at the tone" to be included in message
-      waveform1.frequency(440);
-      waveform1.amplitude(0.7);//was .9
-      wait(250);
-      waveform1.amplitude(0);
-      // Start the recording function
+
       startRecording();
       break;
 
@@ -200,6 +203,15 @@ void loop() {
 }
 
 void startRecording() {
+      // Debug message
+      Serial.println("Started Recording");
+      // Play the tone sound effect/TONE A/ "leave a message at the tone" to be included in message
+      waveform1.frequency(440);
+      waveform1.amplitude(0.7);//was .9
+      wait(250);
+      waveform1.amplitude(0);
+      // Start the recording function
+      
   // Find the first available file number
   for (uint8_t i=0; i<9999; i++) {
     // Format the counter as a five-digit number with leading zeroes, followed by file extension
@@ -287,6 +299,7 @@ void playAllRecordings() {
       // Button is pressed again
       if(buttonPlay.risingEdge() || buttonRecord.fallingEdge()) {
         playRaw1.stop();
+        Serial.println("Stopped playback; resetting to Mode:Prompt");
         mode = Mode::Ready;
         return;
       }   
@@ -295,6 +308,40 @@ void playAllRecordings() {
   // All files have been played
   Serial.print("Done Playing ");
   mode = Mode::Ready;
+}
+
+void playLastRecording() {
+  // Find the first available file number
+  Serial.println("Play last recording.");
+  uint16_t idx = 0; 
+  for (uint16_t i=0; i<9999; i++) {
+    // Format the counter as a five-digit number with leading zeroes, followed by file extension
+    snprintf(filename, 11, " %05d.raw", i);
+    // check, if file with index i exists
+    if (!SD.exists(filename)) {
+     idx = i - 1;
+     break;
+      }
+  }
+      // now play file with index idx == last recorded file
+      snprintf(filename, 11, " %05d.raw", idx);
+      Serial.println(filename);
+      playRaw1.play(filename);
+      mode = Mode::Playing;
+      while (playRaw1.isPlaying()) { // this works for playWav
+      buttonPlay.update();
+      buttonRecord.update();
+      // Button is pressed again
+      if(buttonPlay.risingEdge() || buttonRecord.fallingEdge()) {
+        playRaw1.stop();
+        Serial.println("Stopped playback; resetting to Mode:Ready");
+        mode = Mode::Ready;
+        return;
+      }   
+    }
+      // file has been played
+        Serial.println("Done Playing ");
+  mode = Mode::Ready;  
 }
 
 // Retrieve the current time from Teensy built-in RTC
@@ -319,13 +366,9 @@ void dateTime(uint16_t* date, uint16_t* time, uint8_t* ms10) {
 // but while still listening for input 
 void wait(unsigned int milliseconds) {
   elapsedMillis msec=0;
-
   while (msec <= milliseconds) {
     buttonRecord.update();
-    buttonPlay.update();
     if (buttonRecord.fallingEdge()) Serial.println("Button (pin 0) Press");
-    if (buttonPlay.fallingEdge()) Serial.println("Button (pin 1) Press");
     if (buttonRecord.risingEdge()) Serial.println("Button (pin 0) Release");
-    if (buttonPlay.risingEdge()) Serial.println("Button (pin 1) Release");
   }
 }
