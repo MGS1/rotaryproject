@@ -1,7 +1,7 @@
 # rotaryproject
 COST: ~$90
-+$50 for an Arduino kits for testing purposes (also can turn it into income by using it for the same project - soon to come!)
-This is a wedding voicemail using a Teensy 4.0 with 4.0 Teensy Audio Shield. When the handset is lifted, a pre-recorded greeting message is played followed by a tone.  Recording starts, saves to an SD card, and continues until the handset is replaced. Optional feature to dial a number with rotary to play back the last message recorded. Allows all messages currently saved on SD card through earpiece. Files are saved on SD card as 44.1kHz, 16-bit, mono signed integer RAW audio format. 
++$50 for an Arduino kits for testing purposes (also can turn it into the same project to eliminate 'project wate' - soon to come!)
+This is a wedding voicemail using a Teensy 4.0 with 4.0 Teensy Audio Shield. When the handset is lifted, a pre-recorded greeting message is played followed by a beep.  Recording starts, saves to an SD card, and continues until the handset is replaced. A pushbutton allows for playback of the last recorded message as long as the button is held dow prior to picking up the headset. Files are saved on SD card as 44.1kHz, 16-bit, mono signed integer RAW audio format. "Greeting.wav" audio file stored on micro SD card must be converted to 16 bit signed 44.1 kHz must be used for the software torecoginize and then play 'greeting.wac' audio file.
 
 NOTE: I ordered an Arduino for testing purposes and will upload this same project with a (possibly) more frugal price. More details to follow..
 
