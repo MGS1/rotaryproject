@@ -13,8 +13,6 @@ https://www.amazon.com/gp/product/B07Z6NW913/ref=ox_sc_act_title_2?smid=A2GTSJRN
 
 https://www.amazon.com/gp/product/B01KFP0HBG/ref=ox_sc_act_title_3?smid=A34K5WF5Z9R33P&psc=1
 
-https://www.amazon.com/gp/product/B01BMRTZGE/ref=ox_sc_act_title_5?smid=A2GTSJRNFEVVSP&psc=1
-
 One Teensy 4.0 (there are deals on amazon so won’t link it) - MAKE SURE IT’S A 4.0!! I ordered an LC by accident the first time..
 
 Any 30 amp or greater soldering iron (approx. $13 from Walmart) or any iron with a relatively sharp tip - this is crucial when soldering breakout boards.
