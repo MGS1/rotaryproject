@@ -1,4 +1,4 @@
-/** THis is also a solid, working version of the basic rotary audio recorder. This 
+/** [sketch_aug12a for my files only] - This is also a solid, working version of the basic rotary audio recorder. This 
  *  version doesn't have button playback - I used this version when trying to debug the button playback circuitry - 11/28/22.
  *  Pick up, listen to voicemail or hangup, then record after the beep functionality. Stops recording on hangup.
  *  Otherversions have the rotary dial working as well as the playback button.
